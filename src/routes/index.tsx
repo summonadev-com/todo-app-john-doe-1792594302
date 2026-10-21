@@ -62,8 +62,22 @@ function HomePage() {
           <button className="rounded-lg bg-indigo-600 px-4 py-2 font-medium text-white hover:bg-indigo-700">Add</button>
         </form>
 
-        <ul className="mt-6 space-y-2">
-          {todos.map((t) => (
+        <div className="mt-6 flex gap-2">
+          {(['all', 'active', 'completed'] as const).map((f) => (
+            <button
+              key={f}
+              onClick={() => setFilter(f)}
+              className={`rounded-full px-4 py-1.5 text-sm font-medium capitalize ${
+                filter === f ? 'bg-indigo-600 text-white' : 'bg-white text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              {f}
+            </button>
+          ))}
+        </div>
+
+        <ul className="mt-4 space-y-2">
+          {visible.map((t) => (
             <li key={t.id} className="flex items-center gap-3 rounded-xl bg-white p-3 shadow-sm">
               <input
                 type="checkbox"
