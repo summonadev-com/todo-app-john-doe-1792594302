@@ -21,6 +21,7 @@ function HomePage() {
   const [todos, setTodos] = useState<Todo[]>(load);
   const [text, setText] = useState('');
   const [due, setDue] = useState('');
+  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
 
   useEffect(() => {
     localStorage.setItem(KEY, JSON.stringify(todos));
@@ -35,6 +36,7 @@ function HomePage() {
     setDue('');
   }
 
+  const visible = todos.filter((t) => filter === 'all' || (filter === 'active' ? !t.done : t.done));
   const today = new Date().toISOString().slice(0, 10);
   const remaining = todos.filter((t) => !t.done).length;
 
@@ -86,7 +88,11 @@ function HomePage() {
               </button>
             </li>
           ))}
-          {todos.length === 0 && <li className="py-8 text-center text-slate-400">No tasks yet. Add your first one!</li>}
+          {visible.length === 0 && (
+            <li className="py-8 text-center text-slate-400">
+              {todos.length === 0 ? 'No tasks yet. Add your first one!' : 'No tasks in this view.'}
+            </li>
+          )}
         </ul>
       </div>
     </div>
